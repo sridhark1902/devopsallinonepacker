@@ -1,0 +1,11 @@
+
+*.bashrc
+*.nano
+*.packer.d
+*.profile
+*.snap
+*.ssh
+*.wget-hsts
+*.
+*..
+snap

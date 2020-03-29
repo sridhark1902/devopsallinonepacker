@@ -1,0 +1,97 @@
+{
+  "_comment" : "Create a AWS AMI ith AMZ Linux Ubuntu 2018 with Java and Tomcat",
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-east-1",
+    "source_ami": "ami-08bc77a2c7eb2b1da",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "ubuntu-normal-{{isotime | clean_resource_name}}",
+    "vpc_id": "vpc-03025cf0b16aeecec",
+    "subnet_id": "subnet-01aeed08a022903fd"
+  }],
+
+"provisioners": [
+   {
+     "type": "file",
+     "source": "./welcome.txt",
+     "destination": "/home/ubuntu/"
+   },
+   {
+     "type": "file",
+     "source": "./one.sh",
+     "destination": "/home/ubuntu/"
+   },
+   {
+     "type": "file",
+     "source": "./two.sh",
+     "destination": "/home/ubuntu/"
+   },
+   {
+      "type": "shell",
+      "inline":[
+         "ls -al /home/ubuntu",
+         "cat /home/ubuntu/welcome.txt"
+       ]
+   },
+   {
+     "type": "shell",
+     "script": "./one.sh"
+   },
+   {
+    "type": "shell",
+    "inline": [
+      	"sleep 10",
+      	"sudo apt update -y",
+      	"sudo apt install nginx -y",
+
+        "sleep 10",
+        "sudo apt-get update",
+      	"sudo apt-get install unzip -y",
+
+        "sleep 10s",
+        "sudo apt-get update",
+        "sudo apt-get install python3-pip -y",
+      	"sudo apt-get install awscli -y",
+
+        "sleep 10s",
+
+        "sudo wget https://releases.hashicorp.com/terraform/0.12.12/terraform_0.12.12_linux_amd64.zip",
+      	"sudo unzip terraform_0.12.12_linux_amd64.zip",
+        "sudo chmod 700 terraform_0.12.12_linux_amd64.zip",
+        "sudo mv terraform /usr/local/bin",
+      	"sudo terraform version",
+
+    	"sudo wget https://releases.hashicorp.com/packer/1.5.1/packer_1.5.1_linux_amd64.zip",
+        "sudo unzip packer_1.5.1_linux_amd64.zip",
+        "sudo chmod 700 packer_1.5.1_linux_amd64.zip",
+        "sudo mv packer /usr/local/bin",
+
+      	"sleep 10s",
+      	"sudo apt-get install openjdk-8-jdk -y",
+      	"sudo apt-get update",
+      	"sudo wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -",
+      	"sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'",
+      	"sudo apt-get update",
+      	"sudo apt-get install jenkins -y",
+      	"sudo apt-get update",
+      	"sudo service jenkins start",
+    
+	"sleep 10s",
+
+	"sudo apt update",
+	"sudo apt install software-properties-common -y",
+      	"sudo apt-add-repository --yes --update ppa:ansible/ansible -y",
+      	"sudo apt install ansible -y",
+      	"sudo ansible --version"
+	]
+  }
+  ]
+
+}
