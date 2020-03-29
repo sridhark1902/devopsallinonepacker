@@ -6,6 +6,7 @@
 *.snap
 *.ssh
 *.wget-hsts
+*.bash_history
 *.
 *..
 snap

@@ -5,5 +5,6 @@ java -version
 terraform --version
 packer --version
 docker --version
-ansible --verison
+ansible --version
+python3 --version
 
